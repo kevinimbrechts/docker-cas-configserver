@@ -22,8 +22,6 @@ RUN chmod 750 /cas-configserver-overlay/gradle/wrapper/gradle-wrapper.jar && \
     chmod 750 /cas-configserver-overlay/*.sh && \
     chmod 750 /opt/java-home/bin/java
 
-COPY cas-configserver-overlay/gradle.properties /cas-configserver-overlay/gradle.properties
-
 # Cleaning
 RUN apk del git && \
     rm -rf /cas-configserver-overlay/.git*
