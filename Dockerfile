@@ -7,6 +7,7 @@ FROM kimbrechts/docker-jdk-alpine:11.0.5
 LABEL maintainer="imbrechts.kevin+cas@protonmail.com"
 
 ENV LASTREFRESH="20191119" \
+    PATH=$PATH:$JAVA_HOME/bin \
     GIT_BRANCH="master"
 
 RUN apk update && \
