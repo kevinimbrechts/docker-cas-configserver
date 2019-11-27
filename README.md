@@ -9,7 +9,7 @@ I have put an example in `samples` directory.
 #### Dockerfile
 Here is a sample of a `Dockerfile` including proxy config:
 ```Dockerfile
-FROM kimbrechts/docker-cas-configserver
+FROM kimbrechts/docker-cas-configserver:6.0.x
 
 ARG http_proxy="http://your-user:changeit@your.proxy.net:9999"
 ARG https_proxy="http://your-user:changeit@your.proxy.net:9999"
@@ -24,4 +24,33 @@ ENV http_proxy=${http_proxy} \
 ...
 
 COPY cas-configserver-overlay/gradle.properties /cas-configserver-overlay/gradle.properties
+...
+ENTRYPOINT ["./build.sh"]
+CMD ["run"]
+```
+
+### Override config
+Create `src/main/resources/application.properties` and `src/main/resources/bootstrap.properties` files to override default settings. I have put examples in `samples` directory.
+You have to create your own `Dockerfile` and add these files with COPY command :
+```Dockerfile
+FROM kimbrechts/docker-cas-configserver:6.0.x
+...
+COPY cas-configserver-overlay/src /cas-configserver-overlay/src
+...
+ENTRYPOINT ["./build.sh"]
+CMD ["run"]
+```
+
+### Setting the timezone
+Create your own `Dockerfile` and put these lines :
+```Dockerfile
+FROM kimbrechts/docker-cas-configserver:6.0.x
+...
+RUN apk add --no-cache --virtual tz tzdata && \
+    cp /usr/share/zoneinfo/Europe/Paris /etc/localtime && \
+    echo "Europe/Paris" >  /etc/timezone && \
+    apk del openssl tzdata
+...
+ENTRYPOINT ["./build.sh"]
+CMD ["run"]
 ```

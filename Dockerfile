@@ -6,7 +6,7 @@ FROM kimbrechts/docker-jdk-alpine:11.0.5
 
 LABEL maintainer="imbrechts.kevin+cas@protonmail.com"
 
-ENV LASTREFRESH="20191119" \
+ENV LASTREFRESH="20191127" \
     PATH=$PATH:$JAVA_HOME/bin \
     GIT_BRANCH="master"
 
@@ -17,8 +17,10 @@ RUN apk update && \
 
 # Download CAS configserver overlay project
 WORKDIR /
-RUN git clone --depth 1 --single-branch -b ${GIT_BRANCH} https://github.com/apereo/cas-configserver-overlay.git cas-configserver-overlay
+RUN git clone --depth 1 --single-branch -b ${GIT_BRANCH} https://github.com/apereo/cas-configserver-overlay.git cas-configserver-overlay && \
+    mkdir -p /etc/cas/config
 
+# Permissions
 RUN chmod 750 /cas-configserver-overlay/gradle/wrapper/gradle-wrapper.jar && \
     chmod 750 /cas-configserver-overlay/*.sh && \
     chmod 750 /opt/java-home/bin/java
